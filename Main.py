@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 import requests
 
 if getattr(sys, 'frozen', False):
-
     base_dir = Path(sys.executable).parent
 else:
     base_dir = Path(__file__).parent
@@ -25,10 +24,12 @@ USER_ID = os.getenv("DISCORD_USER_ID")  # The user whose widget identity you own
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri="https://127.0.0.1:1234", scope="user-top-read"))
 
-# Get the user's top track
+
 while True:
+    # Get the user's top tracks
     results = sp.current_user_top_tracks(limit=5, time_range="short_term")
 
+    # Put the results into a widget payload
     widget_payload = {
         "data": {
             "dynamic": [
@@ -55,6 +56,7 @@ while True:
         }
     }
 
+    #stringify
     payload_json = json.dumps(widget_payload)
 
     headers = {
